@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "social-network"
+version = "0.1.0"
+description = "Simple social network"
+authors = ["Dmitry Dakhnovsky <dmitriy_dakhnovskiy@mail.ru>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+uvicorn = "^0.17.6"
+fastapi = "^0.75.0"
+
+[tool.poetry.dev-dependencies]
+pytest-isort = "^3.0.0"
+pytest-flake8 = "^1.1.1"
+black = "^22.1.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql
+    platform: linux/amd64
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "password"
+      MYSQL_DATABASE: "social-network"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - '.:/usr/src/app'
+    environment:
+      - ENVIRONMENT=LOCAL
+      - LOG_LEVEL=INFO
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=user
+      - DB_PASSWORD=secret
+      - DB_NAME=social-network
+    depends_on:
+      db:
+        condition: service_healthy
