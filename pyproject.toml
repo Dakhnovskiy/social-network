@@ -8,6 +8,9 @@ authors = ["Dmitry Dakhnovsky <dmitriy_dakhnovskiy@mail.ru>"]
 python = "^3.10"
 uvicorn = "^0.17.6"
 fastapi = "^0.75.0"
+databases = {extras = ["aiomysql"], version = "^0.5.5"}
+PyMySQL = "^1.0.2"
+alembic = "^1.7.7"
 
 [tool.poetry.dev-dependencies]
 pytest-isort = "^3.0.0"
