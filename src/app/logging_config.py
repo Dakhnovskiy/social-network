@@ -1,3 +1,5 @@
+from src.app.settings import settings
+
 LOGGING_CONFIG = {
     "version": 1,
     "formatters": {
@@ -10,16 +12,14 @@ LOGGING_CONFIG = {
     },
     "handlers": {
         "console": {
-            # 'level': config.LOG_LEVEL,
-            "level": "INFO",
+            "level": settings.log_level,
             "class": "logging.StreamHandler",
             "formatter": "default",
         },
     },
     "loggers": {
         "": {
-            # 'level': config.LOG_LEVEL,
-            "level": "INFO",
+            "level": settings.log_level,
             "handlers": ["console"],
         },
     },
