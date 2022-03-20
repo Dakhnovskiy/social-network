@@ -12,6 +12,7 @@ databases = {extras = ["aiomysql"], version = "^0.5.5"}
 PyMySQL = "0.9.3"
 alembic = "^1.7.7"
 aiomysql = "^0.0.22"
+SQLAlchemy = "^1.4.32"
 
 [tool.poetry.dev-dependencies]
 pytest-isort = "^3.0.0"

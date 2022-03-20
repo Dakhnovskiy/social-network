@@ -493,7 +493,7 @@ standard = ["websockets (>=10.0)", "httptools (>=0.4.0)", "watchgod (>=0.6)", "p
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "a21aae6ba43946abe29277da8e5a17aacaa4654e2baaaec3dda85eb118ad5d92"
+content-hash = "f23f251e80474023ac21dfb75fc91a8851689ae34896082d2b6296e7030981a5"
 
 [metadata.files]
 aiomysql = [
