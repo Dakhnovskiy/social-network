@@ -1,5 +1,5 @@
 import sqlalchemy as sa
-from constants import Sex
+from constants import RelationStatus, Sex
 from src.app.db import metadata
 
 cities = sa.Table(
@@ -47,5 +47,6 @@ users_relations = sa.Table(
     ),
     sa.Column("first_user_id", sa.Integer, sa.ForeignKey("users.id"), nullable=False),
     sa.Column("second_user_id", sa.Integer, sa.ForeignKey("users.id"), nullable=False),
+    sa.Column("status", sa.Enum(RelationStatus), nullable=False),
     sa.Column("created_dt", sa.DateTime, nullable=False, server_default=sa.func.now()),
 )
