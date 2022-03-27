@@ -12,7 +12,6 @@ services:
       - MYSQL_ROOT_PASSWORD=secret
       - MYSQL_PASSWORD=secret
       - MYSQL_DATABASE=social-network
-      - MYSQL_ROOT_HOST=%
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 5s

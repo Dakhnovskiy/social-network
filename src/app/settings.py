@@ -15,15 +15,13 @@ class Settings(BaseSettings):
     @property
     def db_dsn(self):
         return (
-            f"mysql://{self.db_host}:{self.db_port}/{self.db_name}?"
+            f"mysql://{self.db_user}:{self.db_password}@{self.db_host}:{self.db_port}/{self.db_name}?"
             f"min_size={self.db_pool_min_size}&max_size={self.db_pool_max_size}"
         )
 
     @property
     def db_dsn_alembic(self):
-        return (
-            f"mysql+pymysql://{self.db_host}:{self.db_port}/{self.db_name}"
-        )
+        return f"mysql+pymysql://{self.db_user}:{self.db_password}@{self.db_host}:{self.db_port}/{self.db_name}"
 
 
 settings = Settings()
