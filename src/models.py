@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 import sqlalchemy as sa
 from constants import RelationStatus, Sex
@@ -98,3 +98,16 @@ async def create_user_data(
             ],
         )
     return user_id
+
+
+@db.transaction()
+async def get_user_data_by_login(login: str) -> Dict:
+    query = (
+        "SELECT login, password_hash, first_name, last_name, age, sex, city_id, created_dt "
+        "FROM users WHERE login = :login"
+    )
+    data = await db.fetch_one(
+        query=query,
+        values={"login": login},
+    )
+    return data
