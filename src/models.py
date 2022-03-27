@@ -1,6 +1,8 @@
+from typing import List, Optional
+
 import sqlalchemy as sa
 from constants import RelationStatus, Sex
-from src.app.db import metadata
+from src.app.db import db, metadata
 
 cities = sa.Table(
     "cities",
@@ -17,7 +19,7 @@ users = sa.Table(
     sa.Column(
         "id", sa.BigInteger, primary_key=True, autoincrement=True, nullable=False
     ),
-    sa.Column("login", sa.String(256), nullable=False),
+    sa.Column("login", sa.String(256), nullable=False, unique=True),
     sa.Column("password_hash", sa.String(256), nullable=False),
     sa.Column("first_name", sa.String(256), nullable=False),
     sa.Column("last_name", sa.String(256), nullable=False),
@@ -54,3 +56,45 @@ users_relations = sa.Table(
     sa.Column("status", sa.Enum(RelationStatus), nullable=False),
     sa.Column("created_dt", sa.DateTime, nullable=False, server_default=sa.func.now()),
 )
+
+
+@db.transaction()
+async def create_user_data(
+    login: str,
+    password_hash: str,
+    first_name: str,
+    last_name: str,
+    age: int,
+    sex: Sex,
+    interests: Optional[List[str]],
+    city_id: int,
+) -> int:
+    query = (
+        "INSERT INTO users (login, password_hash, first_name, last_name, age, sex, city_id) "
+        "VALUES (:login, :password_hash, :first_name, :last_name, :age, :sex, :city_id)"
+    )
+
+    await db.execute(
+        query=query,
+        values={
+            "login": login,
+            "password_hash": password_hash,
+            "first_name": first_name,
+            "last_name": last_name,
+            "age": age,
+            "sex": sex,
+            "city_id": city_id,
+        },
+    )
+    row = await db.fetch_one("SELECT LAST_INSERT_ID()")
+    user_id = row[0]
+
+    if interests:
+        query = "INSERT INTO users_interests (user_id, interest) VALUES (:user_id, :interest)"
+        await db.execute_many(
+            query=query,
+            values=[
+                {"user_id": user_id, "interest": interest} for interest in interests
+            ],
+        )
+    return user_id

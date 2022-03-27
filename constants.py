@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Sex(Enum):
+class Sex(str, Enum):
     MALE = "MALE"
     FEMALE = "FEMALE"
 

@@ -17,6 +17,7 @@ class UserIn(BaseModel):
 
 
 class UserOut(BaseModel):
+    id: int
     login: str
     first_name: str
     last_name: str
