@@ -124,3 +124,10 @@ async def get_user_data_by_id(user_id: int) -> Optional[Dict]:
         values={"user_id": user_id},
     )
     return dict(data) if data else None
+
+
+@db.transaction()
+async def get_cities_data():
+    query = "SELECT id, name FROM cities"
+    data = await db.fetch_all(query=query)
+    return [dict(row) for row in data]

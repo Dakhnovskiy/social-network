@@ -5,6 +5,15 @@ from constants import RelationStatus, Sex
 from pydantic import BaseModel, conint
 
 
+class City(BaseModel):
+    id: int
+    name: str
+
+
+class CitiesOut(BaseModel):
+    data: List[City]
+
+
 class UserIn(BaseModel):
     login: str
     password: str

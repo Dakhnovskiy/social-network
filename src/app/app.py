@@ -3,7 +3,7 @@ import logging.config
 
 from fastapi import FastAPI
 from fastapi.routing import Request
-from src.api.views import auth, health, users
+from src.api.views import auth, cities, health, users
 from src.app.db import db
 from src.app.logging_config import LOGGING_CONFIG
 from starlette import status
@@ -36,3 +36,4 @@ async def on_500(request: Request, exc: Exception):
 app.include_router(health.router, prefix="/-")
 app.include_router(users.router, prefix="/api/v1")
 app.include_router(auth.router, prefix="/api/v1")
+app.include_router(cities.router, prefix="/api/v1")
