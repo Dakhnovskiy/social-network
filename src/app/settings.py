@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     db_pool_min_size: int = 1
     db_pool_max_size: int = 3
 
+    secret_key: str = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
+
     @property
     def db_dsn(self):
         return (

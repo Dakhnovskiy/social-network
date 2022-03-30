@@ -101,7 +101,7 @@ async def create_user_data(
 
 
 @db.transaction()
-async def get_user_data_by_login(login: str) -> Dict:
+async def get_user_data_by_login(login: str) -> Optional[Dict]:
     query = (
         "SELECT login, password_hash, first_name, last_name, age, sex, city_id, created_dt "
         "FROM users WHERE login = :login"
@@ -110,4 +110,4 @@ async def get_user_data_by_login(login: str) -> Dict:
         query=query,
         values={"login": login},
     )
-    return data
+    return dict(data) if data else None

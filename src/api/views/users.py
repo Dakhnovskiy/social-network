@@ -1,8 +1,6 @@
-import datetime
-
 from fastapi import APIRouter
 from src.api.serializers import UserIn, UserOut
-from src.services.users import create_user
+from src.services.users import create_user, get_user_by_login
 
 router = APIRouter()
 
@@ -19,6 +17,7 @@ async def create_client_handler(user: UserIn):
         interests=user.interests,
         city_id=user.city_id,
     )
+    user_data = await get_user_by_login(user.login)
 
     return {
         "id": user_id,
@@ -29,5 +28,5 @@ async def create_client_handler(user: UserIn):
         "sex": user.sex,
         "interests": user.interests,
         "city_id": user.city_id,
-        "created_dt": datetime.datetime.now(),
+        "created_dt": user_data["created_dt"],
     }

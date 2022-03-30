@@ -36,3 +36,12 @@ class RelatedUser:
 
 class RelatedUsers:
     users: List[RelatedUser]
+
+
+class AuthIn(BaseModel):
+    login: str
+    password: str
+
+
+class AuthOut(BaseModel):
+    token: str

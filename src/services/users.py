@@ -28,5 +28,5 @@ async def create_user(
     )
 
 
-async def get_user_by_login(login: str) -> Dict:
+async def get_user_by_login(login: str) -> Optional[Dict]:
     return await get_user_data_by_login(login)
