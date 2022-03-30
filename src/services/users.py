@@ -1,7 +1,7 @@
 from typing import Dict, List, Optional
 
 from constants import Sex
-from src.models import create_user_data, get_user_data_by_login
+from src.models import create_user_data, get_user_data_by_id, get_user_data_by_login
 from src.services.crypto import get_password_hash
 
 
@@ -30,3 +30,7 @@ async def create_user(
 
 async def get_user_by_login(login: str) -> Optional[Dict]:
     return await get_user_data_by_login(login)
+
+
+async def get_user_by_id(user_id: int) -> Optional[Dict]:
+    return await get_user_data_by_id(user_id)

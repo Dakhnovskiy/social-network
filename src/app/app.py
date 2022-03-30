@@ -6,6 +6,7 @@ from fastapi.routing import Request
 from src.api.views import auth, health, users
 from src.app.db import db
 from src.app.logging_config import LOGGING_CONFIG
+from starlette import status
 from starlette.responses import JSONResponse
 
 logging.config.dictConfig(LOGGING_CONFIG)
@@ -27,7 +28,7 @@ async def shutdown():
 async def on_500(request: Request, exc: Exception):
     logging.exception(exc)
     return JSONResponse(
-        status_code=500,
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         content={"detail": "Something went wrong!"},
     )
 

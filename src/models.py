@@ -103,11 +103,24 @@ async def create_user_data(
 @db.transaction()
 async def get_user_data_by_login(login: str) -> Optional[Dict]:
     query = (
-        "SELECT login, password_hash, first_name, last_name, age, sex, city_id, created_dt "
+        "SELECT id, login, password_hash, first_name, last_name, age, sex, city_id, created_dt "
         "FROM users WHERE login = :login"
     )
     data = await db.fetch_one(
         query=query,
         values={"login": login},
+    )
+    return dict(data) if data else None
+
+
+@db.transaction()
+async def get_user_data_by_id(user_id: int) -> Optional[Dict]:
+    query = (
+        "SELECT id, login, password_hash, first_name, last_name, age, sex, city_id, created_dt "
+        "FROM users WHERE id = :user_id"
+    )
+    data = await db.fetch_one(
+        query=query,
+        values={"user_id": user_id},
     )
     return dict(data) if data else None

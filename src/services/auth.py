@@ -4,7 +4,6 @@ from typing import Dict, Union
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-from pydantic import BaseModel
 from src.app.settings import settings
 from src.constants import ALGORITHM
 from src.services.crypto import verify_password
@@ -13,10 +12,11 @@ from starlette import status
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-
-class TokenData(BaseModel):
-    id: int
-    login: str
+credentials_exception = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Could not validate credentials",
+    headers={"WWW-Authenticate": "Bearer"},
+)
 
 
 async def authenticate_user(login: str, password: str) -> Union[Dict, bool]:
@@ -39,12 +39,7 @@ def create_access_token(data: Dict, expires_delta: timedelta | None = None):
     return encoded_jwt
 
 
-async def get_current_user(token: str = Depends(oauth2_scheme)) -> Dict:
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+async def get_user_login_from_token(token: str = Depends(oauth2_scheme)) -> str:
     try:
         payload = jwt.decode(token, settings.secret_key, algorithms=[ALGORITHM])
         login: str = payload.get("sub")
@@ -52,6 +47,10 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> Dict:
             raise credentials_exception
     except JWTError:
         raise credentials_exception
+    return login
+
+
+async def get_current_user(login: str = Depends(get_user_login_from_token)) -> Dict:
     user = await get_user_by_login(login)
     if user is None:
         raise credentials_exception

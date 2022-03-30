@@ -23,7 +23,6 @@ class UserOut(BaseModel):
     last_name: str
     age: conint(ge=0)
     sex: Sex
-    interests: Optional[List[str]]
     city_id: int
     created_dt: datetime.datetime
 
