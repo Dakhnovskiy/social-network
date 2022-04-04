@@ -31,8 +31,13 @@ async def get_my_user_info(current_user: Dict = Depends(get_current_user)):
     return current_user
 
 
-@router.get("/users/{user_id}", response_model=UserOut, status_code=status.HTTP_200_OK)
-async def get_user_info_by_id(user_id: int, login=Depends(get_user_login_from_token)):
+@router.get(
+    "/users/{user_id}",
+    dependencies=[Depends(get_user_login_from_token)],
+    response_model=UserOut,
+    status_code=status.HTTP_200_OK,
+)
+async def get_user_info_by_id(user_id: int):
     user_data = await get_user_by_id(user_id)
     if not user_data:
         raise HTTPException(
