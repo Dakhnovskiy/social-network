@@ -1,9 +1,14 @@
-from typing import Dict
+from typing import Dict, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
-from src.api.serializers import UserIn, UserOut
+from src.api.serializers import UserIn, UserOut, UsersOut
 from src.services.auth import get_current_user, get_user_login_from_token
-from src.services.users import create_user, get_user_by_id, get_user_by_login
+from src.services.users import (
+    create_user,
+    get_user_by_id,
+    get_user_by_login,
+    search_users,
+)
 from starlette import status
 
 router = APIRouter()
@@ -45,3 +50,14 @@ async def get_user_info_by_id(user_id: int):
             detail="User not found",
         )
     return user_data
+
+
+@router.get(
+    "/users",
+    dependencies=[Depends(get_user_login_from_token)],
+    response_model=UsersOut,
+    status_code=status.HTTP_200_OK,
+)
+async def get_users(first_name: Optional[str] = None, last_name: Optional[str] = None):
+    users_data = await search_users(first_name, last_name)
+    return {"data": users_data}

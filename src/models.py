@@ -131,3 +131,24 @@ async def get_cities_data():
     query = "SELECT id, name FROM cities"
     data = await db.fetch_all(query=query)
     return [dict(row) for row in data]
+
+
+@db.transaction()
+async def get_users_data(
+    first_name: Optional[str], last_name: Optional[str]
+) -> List[Dict]:
+    query = (
+        "SELECT id, login, first_name, last_name, age, sex, city_id, created_dt "
+        "FROM users "
+        "WHERE 1=1"
+        "  AND first_name LIKE :first_name" if first_name else "" 
+        "  AND last_name LIKE :last_name" if last_name else ""
+    )
+    values = {}
+    if first_name:
+        values["first_name"] = f"{first_name}%"
+    if last_name:
+        values["last_name"] = f"{last_name}%"
+
+    data = await db.fetch_all(query=query, values=values)
+    return [dict(row) for row in data]

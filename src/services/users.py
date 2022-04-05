@@ -1,7 +1,12 @@
 from typing import Dict, List, Optional
 
 from constants import Sex
-from src.models import create_user_data, get_user_data_by_id, get_user_data_by_login
+from src.models import (
+    create_user_data,
+    get_user_data_by_id,
+    get_user_data_by_login,
+    get_users_data,
+)
 from src.services.crypto import get_password_hash
 
 
@@ -34,3 +39,9 @@ async def get_user_by_login(login: str) -> Optional[Dict]:
 
 async def get_user_by_id(user_id: int) -> Optional[Dict]:
     return await get_user_data_by_id(user_id)
+
+
+async def search_users(
+    first_name: Optional[str], last_name: Optional[str]
+) -> List[Dict]:
+    return await get_users_data(first_name, last_name)

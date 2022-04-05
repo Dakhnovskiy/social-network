@@ -36,6 +36,10 @@ class UserOut(BaseModel):
     created_dt: datetime.datetime
 
 
+class UsersOut(BaseModel):
+    data: List[UserOut]
+
+
 class RelatedUser:
     first_name: str
     last_name: str
